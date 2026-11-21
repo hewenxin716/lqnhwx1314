@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5">
+  <meta name="theme-color" content="#fff6f0">
+  <meta name="description" content="来自星星的一封信 · 写给云小娜小姐的、可交互的一封信。">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="来自星星的一封信">
+  <meta property="og:title" content="来自星星的一封信 · 给云小娜小姐">
+  <meta property="og:description" content="有一封从星星那里寄来的信，想亲手交到你手上。">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/share.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="来自星星的一封信 · 给云小娜小姐">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>来自星星的一封信 · lqnhwx1314</title>
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='%23f2688c' d='M32 2C34.2 20.4 43.6 29.8 62 32C43.6 34.2 34.2 43.6 32 62C29.8 43.6 20.4 34.2 2 32C20.4 29.8 29.8 20.4 32 2Z'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- 非阻塞加载：网络不通（例如国内直连）时自动使用系统楷体 / 宋体，不影响打开 -->
+  <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+  </noscript>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="is-locked">
+
+  <!-- 背景光晕 + 星星 + 漂浮爱心 -->
+  <div class="ambient" aria-hidden="true">
+    <div class="bg-glow bg-glow--1"></div>
+    <div class="bg-glow bg-glow--2"></div>
+    <div class="bg-glow bg-glow--3"></div>
+    <canvas id="fxCanvas" class="fx-canvas"></canvas>
+    <div class="shooting-star shooting-star--1"></div>
+    <div class="shooting-star shooting-star--2"></div>
+    <div class="bg-grain"></div>
+  </div>
+
+  <!-- ============ 封面：来自星星的一封信 ============ -->
+  <section class="gate" id="gate" aria-label="欢迎页">
+    <div class="gate-hearts" aria-hidden="true">
+      <span>✦</span><span>♡</span><span>✧</span><span>✦</span><span>⋆</span><span>♡</span>
+    </div>
+
+    <div class="gate-card">
+      <p class="gate-eyebrow">A LETTER FROM THE STARS</p>
+
+      <div class="gate-emblem" aria-hidden="true">
+        <span class="gate-emblem-halo"></span>
+        <span class="gate-emblem-spark gate-emblem-spark--1">✦</span>
+        <span class="gate-emblem-spark gate-emblem-spark--2">✧</span>
+        <svg viewBox="0 0 64 64" class="gate-star" aria-hidden="true">
+          <defs>
+            <linearGradient id="starGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#ffd89f"/>
+              <stop offset="42%" stop-color="#f78aa4"/>
+              <stop offset="100%" stop-color="#d94a72"/>
+            </linearGradient>
+          </defs>
+          <path d="M32 2C34.2 20.4 43.6 29.8 62 32C43.6 34.2 34.2 43.6 32 62C29.8 43.6 20.4 34.2 2 32C20.4 29.8 29.8 20.4 32 2Z" fill="url(#starGrad)"/>
+          <path d="M32 18C35.4 23.4 40.6 28.6 46 32C40.6 35.4 35.4 40.6 32 46C28.6 40.6 23.4 35.4 18 32C23.4 28.6 28.6 23.4 32 18Z" fill="rgba(255,255,255,.42)"/>
+        </svg>
+      </div>
+
+      <h1 class="gate-title">
+        <span class="gate-title-small">来自星星的</span>
+        <span class="gate-title-main"><span class="gate-title-star">✦</span>一封信<span class="gate-title-star">✦</span></span>
+      </h1>
+
+      <p class="gate-sub">有一封从星星那里寄来的信<br>想亲手交到你手上</p>
+
+      <button class="start-btn" id="startBtn" type="button">
+        <span class="start-btn-glow" aria-hidden="true"></span>
+        <span class="start-btn-label">轻触开启</span>
+        <span class="start-btn-heart" aria-hidden="true">✧</span>
+      </button>
+
+      <p class="gate-tip">建议开启声音 · 戴上耳机更好听</p>
+    </div>
+
+    <p class="gate-sign"><span class="gate-domain">lqnhwx1314</span><span class="gate-sign-star">✦</span>for 云小娜 · from 何文鑫</p>
+  </section>
+
+  <!-- ============ 主舞台 ============ -->
+  <main class="stage" id="stage">
+
+    <!-- 场景 1：信封 -->
+    <section class="scene scene--envelope" data-scene="envelope" aria-hidden="true" inert>
+      <div class="scene-inner">
+        <p class="scene-eyebrow">A LETTER FROM THE STARS</p>
+
+        <div class="envelope-stage">
+          <span class="float-tag float-tag--a">楼俏娜 ♡</span>
+          <span class="float-tag float-tag--b">云小娜 ❤</span>
+          <span class="float-tag float-tag--c">来自星星的信 ✦</span>
+          <span class="env-star" aria-hidden="true">✧</span>
+
+          <div class="envelope-float">
+            <div class="envelope" id="envelope" aria-hidden="true">
+              <div class="env-back"></div>
+              <div class="env-note">
+                <span class="env-note-to">To. 云小娜小姐</span>
+                <span class="env-note-line"></span>
+                <span class="env-note-heart">♡</span>
+              </div>
+              <div class="env-front"></div>
+              <div class="env-flap"></div>
+              <div class="env-seal"><span>娜</span></div>
+            </div>
+            <div class="env-shadow" aria-hidden="true"></div>
+          </div>
+        </div>
+
+        <h2 class="scene-title">这里有一封信，<br>只写给你一个人。</h2>
+
+        <button class="btn btn--primary btn--open" id="openBtn" type="button">
+          <span class="btn-spark" aria-hidden="true">✦</span>
+          打开信封
+          <span class="btn-spark" aria-hidden="true">✦</span>
+        </button>
+
+        <p class="scene-hint">封口上，写着你的名字</p>
+      </div>
+    </section>
+
+    <!-- 场景 2：打招呼 -->
+    <section class="scene scene--hello" data-scene="hello" aria-hidden="true" inert>
+      <div class="scene-inner hello-inner">
+        <div class="hello-wrap">
+          <div class="hello-envelope" aria-hidden="true">
+            <span class="hello-seal">娜</span>
+          </div>
+
+          <article class="hello-card">
+            <span class="hello-stamp" aria-hidden="true">✦</span>
+            <span class="hello-spark hello-spark--1" aria-hidden="true">✧</span>
+            <span class="hello-spark hello-spark--2" aria-hidden="true">✦</span>
+            <p class="hello-kicker">TO · 云小娜小姐</p>
+
+            <div class="hello-text">
+              <p class="hello-line hello-line--1">你好呀，云小娜小姐，</p>
+              <p class="hello-line hello-line--2">准备好了么，</p>
+              <p class="hello-line hello-line--3">我们要开始<em>接下来的旅程</em>啦~</p>
+            </div>
+
+            <div class="hello-choices">
+              <button class="btn btn--ghost hello-choice" data-go="letter" type="button">好的！</button>
+              <button class="btn btn--primary hello-choice" data-go="letter" type="button">我已整装待发！</button>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 场景 3：读信 -->
+    <section class="scene scene--letter" data-scene="letter" aria-hidden="true" inert>
+      <div class="letter-scroll" id="letterScroll">
+        <div class="letter-topbar">
+          <span class="letter-to">TO · 云小娜小姐</span>
+          <button class="skip-btn" id="skipBtn" type="button">跳过动画</button>
+        </div>
+
+        <article class="paper" id="paper">
+          <span class="paper-margin-line" aria-hidden="true"></span>
+          <div class="paper-ornament" aria-hidden="true">
+            <span>✦</span>
+          </div>
+
+          <header class="paper-head">
+            <span class="paper-kicker">A LETTER FROM THE STARS</span>
+            <span class="paper-stamp" aria-hidden="true">何<small>♥</small></span>
+          </header>
+
+          <div class="letter-body" id="letterBody"></div>
+
+          <footer class="letter-foot">
+            <span class="letter-sign">—— 何文鑫</span>
+            <span class="letter-heart" aria-hidden="true">❤</span>
+          </footer>
+        </article>
+
+        <div class="letter-endspace"></div>
+      </div>
+
+      <div class="letter-actions" id="letterActions" aria-hidden="true" inert>
+        <button class="btn btn--reject" id="rejectBtn" type="button">残忍拒绝</button>
+        <button class="btn btn--accept" id="acceptBtn" type="button">欣然接受</button>
+      </div>
+    </section>
+
+    <!-- 场景 4：照片与尾声 -->
+    <section class="scene scene--final" data-scene="final" aria-hidden="true" inert>
+      <canvas id="fireworksCanvas" class="fireworks-canvas" aria-hidden="true"></canvas>
+
+      <div class="final-scroll" id="finalScroll">
+        <p class="final-kicker">SHE SAID YES · 1314</p>
+
+        <h2 class="final-title">惊不惊喜，<br><span>意不意外？</span></h2>
+        <p class="final-sub">其实从你点开这封信开始，<br>我的心就跳得很快很快。</p>
+
+        <div class="photo-wall" id="photoWall">
+          <p class="wall-kicker">FOUR LITTLE MOMENTS · 4 张</p>
+          <h3 class="wall-title">你的每一面，我都喜欢</h3>
+
+          <figure class="polaroid polaroid--hero photo-item" data-caption="我的小馋猫小姐 ♡" tabindex="0" role="button" aria-label="查看照片：穿汉服的云小娜">
+            <span class="tape tape--a" aria-hidden="true"></span>
+            <span class="tape tape--b" aria-hidden="true"></span>
+            <div class="photo-frame photo-frame--hero">
+              <img src="assets/photos/hanfu.jpg" alt="云小娜穿汉服、抱着琵琶的照片" loading="eager" decoding="async">
+              <span class="photo-shine" aria-hidden="true"></span>
+            </div>
+            <figcaption>我的小馋猫小姐 <span aria-hidden="true">♡</span></figcaption>
+            <span class="photo-sticker" aria-hidden="true">楼俏娜 ♡</span>
+          </figure>
+
+          <div class="photo-strip">
+            <figure class="polaroid polaroid--mini photo-item polaroid--tilt-a" data-caption="诶嘿嘿，这一面也喜欢" tabindex="0" role="button" aria-label="查看照片：俏皮表情的云小娜">
+              <div class="photo-frame photo-frame--mini">
+                <img src="assets/photos/wink.jpg" alt="云小娜俏皮表情的照片" loading="lazy" decoding="async">
+              </div>
+              <figcaption>诶嘿嘿</figcaption>
+            </figure>
+
+            <figure class="polaroid polaroid--mini photo-item polaroid--tilt-b" data-caption="I Love You!" tabindex="0" role="button" aria-label="查看照片：手绘 I Love You 卡片">
+              <div class="photo-frame photo-frame--mini">
+                <img src="assets/photos/love-note.jpg" alt="手绘的粉色 I Love You 卡片" loading="lazy" decoding="async">
+              </div>
+              <figcaption>I Love You!</figcaption>
+            </figure>
+
+            <figure class="polaroid polaroid--mini photo-item polaroid--tilt-c" data-caption="日常的你，也很可爱" tabindex="0" role="button" aria-label="查看照片：地铁站里的云小娜">
+              <div class="photo-frame photo-frame--mini">
+                <img src="assets/photos/subway.jpg" alt="云小娜在地铁站里的照片" loading="lazy" decoding="async">
+              </div>
+              <figcaption>日常 ♡</figcaption>
+            </figure>
+          </div>
+
+          <p class="wall-hint">轻触照片，可以看大图 · 4 张</p>
+        </div>
+
+        <div class="final-love">
+          <p class="love-line">楼俏娜，我喜欢你</p>
+          <p class="love-sub">云小娜 ❤ · 1314</p>
+        </div>
+
+        <blockquote class="final-quote">
+          “希望来上海的第一年，是我们的开始，也是我们的归宿。”
+        </blockquote>
+
+        <div class="final-actions">
+          <button class="btn btn--primary" id="moreLoveBtn" type="button">再心动一次</button>
+          <button class="btn btn--ghost" id="rereadBtn" type="button">再读一遍信</button>
+        </div>
+
+        <p class="final-sign">何文鑫 ♡ 楼俏娜</p>
+        <p class="final-tiny">lqnhwx1314 · 我们的故事，从这一页开始</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ 照片大图 ============ -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="照片大图" hidden>
+    <div class="lightbox-backdrop" id="lightboxBackdrop"></div>
+    <button class="lightbox-close" id="lightboxClose" type="button" aria-label="关闭大图">✕</button>
+    <button class="lightbox-nav lightbox-prev" id="lightboxPrev" type="button" aria-label="上一张照片">‹</button>
+    <figure class="lightbox-figure">
+      <img id="lightboxImg" alt="">
+      <figcaption>
+        <span id="lightboxCaption"></span>
+        <small id="lightboxCount"></small>
+      </figcaption>
+    </figure>
+    <button class="lightbox-nav lightbox-next" id="lightboxNext" type="button" aria-label="下一张照片">›</button>
+  </div>
+
+  <!-- ============ 拒绝彩蛋：撒娇小猫 ============ -->
+  <div class="cat-pop" id="catPop" hidden>
+    <div class="cat-scene">
+      <div class="cat-bubble">
+        <strong>不要拒绝我嘛~~~</strong>
+        <span>喵～</span>
+      </div>
+
+      <div class="cat-illustration">
+        <span class="mini-heart mini-heart--1" aria-hidden="true">♡</span>
+        <span class="mini-heart mini-heart--2" aria-hidden="true">♡</span>
+        <span class="mini-heart mini-heart--3" aria-hidden="true">♡</span>
+
+        <svg class="cat-svg" viewBox="0 0 220 200" role="img" aria-label="一只撒娇的小猫">
+          <defs>
+            <radialGradient id="catFur" cx="42%" cy="30%" r="78%">
+              <stop offset="0%" stop-color="#fffdf6"/>
+              <stop offset="70%" stop-color="#fff2e1"/>
+              <stop offset="100%" stop-color="#ffe3c9"/>
+            </radialGradient>
+          </defs>
+
+          <ellipse cx="110" cy="186" rx="60" ry="9" fill="rgba(150,80,100,.13)"/>
+
+          <path d="M162 164c26-3 33-22 24-36-6-9-18-9-22-2" fill="none" stroke="#f6d8c2" stroke-width="13" stroke-linecap="round"/>
+          <ellipse cx="110" cy="161" rx="45" ry="31" fill="url(#catFur)" stroke="#eccfba" stroke-width="3"/>
+
+          <path d="M60 64 50 17c-1-6 4-8 9-5l40 26Z" fill="#fff7eb" stroke="#eccfba" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M160 64 170 17c1-6-4-8-9-5l-40 26Z" fill="#fff7eb" stroke="#eccfba" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M65 54 60 31c-1-3 2-4 4-2l18 12Z" fill="#ffc4d0"/>
+          <path d="M155 54 160 31c1-3-2-4-4-2l-18 12Z" fill="#ffc4d0"/>
+
+          <ellipse cx="110" cy="101" rx="59" ry="53" fill="url(#catFur)" stroke="#eccfba" stroke-width="3"/>
+
+          <g class="cat-brows" fill="none" stroke="#c99b8a" stroke-width="2.4" stroke-linecap="round" opacity=".8">
+            <path d="M78 80q7-5 15-2"/>
+            <path d="M127 78q8-3 15 2"/>
+          </g>
+
+          <g class="cat-eyes">
+            <ellipse class="cat-eye" cx="86" cy="99" rx="10.5" ry="13" fill="#5a3d38"/>
+            <ellipse class="cat-eye" cx="134" cy="99" rx="10.5" ry="13" fill="#5a3d38"/>
+            <circle cx="89.5" cy="94" r="3.6" fill="#fff"/>
+            <circle cx="137.5" cy="94" r="3.6" fill="#fff"/>
+            <circle cx="82.5" cy="105" r="1.7" fill="#fff" opacity=".75"/>
+            <circle cx="130.5" cy="105" r="1.7" fill="#fff" opacity=".75"/>
+          </g>
+
+          <ellipse cx="66" cy="118" rx="12" ry="7" fill="#ffb0c0" opacity=".7"/>
+          <ellipse cx="154" cy="118" rx="12" ry="7" fill="#ffb0c0" opacity=".7"/>
+
+          <path d="M104 113h12l-6 7z" fill="#e9829a"/>
+          <path d="M110 120q0 7-8 7M110 120q0 7 8 7" fill="none" stroke="#a97a72" stroke-width="2.4" stroke-linecap="round"/>
+
+          <g stroke="#d9b5a3" stroke-width="1.8" stroke-linecap="round" opacity=".9">
+            <path d="M48 101 26 97"/><path d="M48 110 27 112"/><path d="M50 119 31 126"/>
+            <path d="M172 101 194 97"/><path d="M172 110 193 112"/><path d="M170 119 189 126"/>
+          </g>
+
+          <ellipse cx="88" cy="168" rx="16" ry="12" fill="#fff9f0" stroke="#eccfba" stroke-width="2.5"/>
+          <ellipse cx="132" cy="168" rx="16" ry="12" fill="#fff9f0" stroke="#eccfba" stroke-width="2.5"/>
+          <g stroke="#e3c1ab" stroke-width="1.6" stroke-linecap="round">
+            <path d="M83 161v5M88 160v6M93 161v5"/>
+            <path d="M127 161v5M132 160v6M137 161v5"/>
+          </g>
+
+          <path d="M110 153c-8-8-19 2 0 15 19-13 8-23 0-15Z" fill="#f2688c"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 音乐 / 音效 ============ -->
+  <div class="music-dock" id="musicDock">
+    <button class="music-fab" id="musicFab" type="button" aria-label="音乐和音效" aria-expanded="false" aria-controls="musicPanel">
+      <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+      <span class="music-note" aria-hidden="true">♪</span>
+    </button>
+
+    <div class="music-panel" id="musicPanel" aria-hidden="true">
+      <div class="music-now">
+        <div class="music-disc" aria-hidden="true"><span>♪</span></div>
+        <div class="music-meta">
+          <p class="music-title">如果的事</p>
+          <p class="music-artist">范玮琪 · 张韶涵</p>
+        </div>
+        <button class="music-play" id="playBtn" type="button" aria-label="播放背景音乐">▶</button>
+      </div>
+
+      <label class="vol-row">
+        <span>音量</span>
+        <input type="range" id="volume" min="0" max="100" step="1" value="60" aria-label="背景音乐音量">
+        <output id="volumeOut" for="volume">60</output>
+      </label>
+
+      <div class="music-row">
+        <button class="mini-btn" id="sfxBtn" type="button" aria-pressed="true">音效 · 开</button>
+        <label class="mini-btn mini-btn--file">
+          本机音乐
+          <input type="file" id="bgmFile" accept="audio/*" hidden>
+        </label>
+      </div>
+
+      <p class="music-hint" id="musicHint">《如果的事》已就绪 · 可在左上角 ♪ 里暂停或调音量</p>
+    </div>
+  </div>
+
+  <div class="heart-layer" id="heartLayer" aria-hidden="true"></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <audio id="bgm" loop preload="metadata" src="assets/bgm.mp3"></audio>
+
+  <noscript>
+    <div class="noscript">这封信需要一点点 JavaScript 才能打开哦～</div>
+  </noscript>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
